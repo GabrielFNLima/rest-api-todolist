@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('TodoItems', {
+    return queryInterface.createTable("TodoItems", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,7 +12,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       complete: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       createdAt: {
         allowNull: false,
@@ -21,10 +22,19 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      todoId: {
+        type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
+        references: {
+          model: "Todos",
+          key: "id",
+          as: "todoId"
+        }
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('TodoItems');
+    return queryInterface.dropTable("TodoItems");
   }
 };
