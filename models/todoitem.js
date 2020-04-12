@@ -3,8 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const TodoItem = sequelize.define(
     "TodoItem",
     {
-      content: DataTypes.STRING,
-      complete: DataTypes.BOOLEAN
+      content: { type: DataTypes.STRING },
+      complete: { type: DataTypes.BOOLEAN, defaultValue: false }
     },
     {}
   );
