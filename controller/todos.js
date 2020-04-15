@@ -38,4 +38,47 @@ module.exports = {
       })
       .catch((error) => res.status(400).send(error));
   },
+  updateItem(req, res) {
+    const todoId = req.params.todoId;
+    return Todo.findAll({
+      where: { id: todoId },
+      include: [
+        {
+          model: TodoItem,
+          as: "todoItems",
+        },
+      ],
+    }).then((todos) => {
+      const updated = true;
+      todos.map((items) => {
+        items.todoItems.map((item) => {
+          TodoItem.findByPk(item.id).then((item) => {
+            if (item.complete) {
+              item
+                .update({
+                  complete: false,
+                })
+                .then(() => {
+                  res
+                    .status(200)
+                    .send({
+                      message: `All Task '${items.title}' item cleared successfully`,
+                    });
+                });
+            } else {
+              item
+                .update({
+                  complete: true,
+                })
+                .then(() => {
+                  res.status(200).send({
+                    message: `All Task '${items.title}' item marked successfully`,
+                  });
+                });
+            }
+          });
+        });
+      });
+    });
+  },
 };
