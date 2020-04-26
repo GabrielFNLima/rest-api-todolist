@@ -51,6 +51,16 @@ module.exports = {
     }).then((todos) => {
       const updated = true;
       todos.map((items) => {
+        if (items.allComplete) {
+          items.update({
+            allComplete: false,
+          });
+        } else {
+          items.update({
+            allComplete: true,
+          });
+        }
+
         items.todoItems.map((item) => {
           TodoItem.findByPk(item.id).then((item) => {
             if (item.complete) {
@@ -59,11 +69,9 @@ module.exports = {
                   complete: false,
                 })
                 .then(() => {
-                  res
-                    .status(200)
-                    .send({
-                      message: `All Task '${items.title}' item cleared successfully`,
-                    });
+                  res.status(200).send({
+                    message: `All Task '${items.title}' item cleared successfully`,
+                  });
                 });
             } else {
               item

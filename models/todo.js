@@ -4,16 +4,17 @@ module.exports = (sequelize, DataTypes) => {
     "Todo",
     {
       title: {
-        type: DataTypes.STRING
-      }
+        type: DataTypes.STRING,
+      },
+      allComplete: { type: DataTypes.BOOLEAN, defaultValue: false },
     },
     {}
   );
-  Todo.associate = function(models) {
+  Todo.associate = function (models) {
     // associations can be defined here
     Todo.hasMany(models.TodoItem, {
       foreignKey: "todoId",
-      as: "todoItems"
+      as: "todoItems",
     });
   };
   return Todo;
