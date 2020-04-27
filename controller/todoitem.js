@@ -1,4 +1,5 @@
 const TodoItem = require("../models").TodoItem;
+const Todo = require("../models").Todo;
 
 module.exports = {
   create(req, res) {
@@ -45,5 +46,27 @@ module.exports = {
         });
       })
       .catch((err) => res.status(400).send(err));
+  },
+  destroy(req, res) {
+    const todoId = req.params.todoId;
+    const todoItem = req.params.todoItem;
+
+    TodoItem.findAll({
+      where: {
+        id: todoItem,
+        todoId,
+      },
+    }).then((item) => {
+      if (item.indexOff < 0) {
+        return res.status(404).send({ message: "Item not found" });
+      }
+      item.map((i) => {
+        i.destroy()
+          .then(() =>
+            res.status(200).send({ message: "Item Removed Successfully" })
+          )
+          .catch((error) => res.status(400).send(error));
+      });
+    });
   },
 };
