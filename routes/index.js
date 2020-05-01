@@ -1,5 +1,6 @@
 const todosController = require("../controller/todos");
 const todosItemsController = require("../controller/todoitem");
+const routesController = require("../controller/routes");
 
 module.exports = (app) => {
   app.get("/api", (req, res) => {
@@ -18,4 +19,7 @@ module.exports = (app) => {
     "/api/todos/:todoId/items/:todoItem",
     todosItemsController.destroy
   );
+
+  app.post("/api/router", routesController.create);
+  app.get("/api/router", routesController.list);
 };

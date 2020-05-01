@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "todoId",
       as: "todoItems",
     });
+
+    Todo.belongsTo(models.Router, {
+      foreignKey: "routerId",
+      onDelete: "CASCADE",
+    });
   };
   return Todo;
 };
