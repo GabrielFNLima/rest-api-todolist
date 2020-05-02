@@ -11,12 +11,16 @@ module.exports = {
       .catch((err) => res.status(400).send(err));
   },
   list(req, res) {
+    const { sort = "DESC" } = req.query;
     return Todo.findAll({
       include: [
         {
           model: TodoItem,
           as: "todoItems",
         },
+      ],
+      order: [
+        ["createdAt", sort.toUpperCase()], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
       ],
     })
       .then((todos) => res.status(200).send(todos))
