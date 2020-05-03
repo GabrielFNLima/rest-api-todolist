@@ -1,5 +1,6 @@
 const Router = require("../models").Router;
 const Todo = require("../models").Todo;
+const TodoItem = require("../models").TodoItem;
 
 module.exports = {
   create(req, res) {
@@ -21,6 +22,12 @@ module.exports = {
         {
           model: Todo,
           as: "todo",
+          include: [
+            {
+              model: TodoItem,
+              as: "todoItems",
+            },
+          ],
         },
       ],
     })
