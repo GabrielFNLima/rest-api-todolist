@@ -20,6 +20,6 @@ module.exports = (app) => {
     todosItemsController.destroy
   );
 
-  app.post("/api/router", routesController.create);
-  app.get("/api/router", routesController.list);
+  app.get("/api/router/:route", routesController.create);
+  app.get("/api/routes", routesController.list);
 };

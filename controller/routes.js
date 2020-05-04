@@ -4,11 +4,25 @@ const TodoItem = require("../models").TodoItem;
 
 module.exports = {
   create(req, res) {
-    return Router.create({
-      route: req.body.router,
+    const { sort = "DESC" } = req.query;
+
+    return Router.findOrCreate({
+      where: { route: req.params.route },
+      include: [
+        {
+          model: Todo,
+          as: "todo",
+          include: [
+            {
+              model: TodoItem,
+              as: "todoItems",
+            },
+          ],
+        },
+      ],
     })
-      .then((r) => {
-        res.status(201).send(r);
+      .spread((r) => {
+        res.status(200).send(r);
       })
       .catch((err) => {
         res.status(400).send(err);
@@ -17,6 +31,8 @@ module.exports = {
   },
 
   list(req, res) {
+    const { sort = "DESC" } = req.query;
+
     return Router.findAll({
       include: [
         {
@@ -29,6 +45,9 @@ module.exports = {
             },
           ],
         },
+      ],
+      order: [
+        ["createdAt", sort.toUpperCase()], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
       ],
     })
       .then((routes) => res.status(200).send(routes))
