@@ -1,4 +1,5 @@
-{
+require('dotenv/config')
+module.exports = {
   "development": {
     "dialect": "sqlite",
     "storage": "data/dev-db.sqlite3",
@@ -10,8 +11,11 @@
     "operatorsAliases": false
   },
   "production": {
-    "dialect": "sqlite",
-    "storage": "data/prod-db.sqlite3",
+    "dialect": process.env.DB_DIALECT,
+    "host":process.env.DB_HOST,
+    "username":process.env.DB_USER,
+    "password":process.env.DB_PASS,
+    "database":process.env.DB_NAME,
     "operatorsAliases": false
   }
 }
